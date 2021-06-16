@@ -11,9 +11,11 @@ using vector_type = std::vector<size_t>;
 using map_type = std::map<size_t,size_t>;
 
 size_t Rnd(size_t from, size_t to) {
+	static std::random_device rd;
+	static std::mt19937 eng(rd());
 	if (from > to) std::swap(from, to);
-	size_t num = to - from + 1;
-	return from + rand() % num;
+	std::uniform_int_distribution<size_t> rnd(from, to);
+	return rnd(eng);
 	}
 
 void Filling(vector_type& vector, map_type& map) {
@@ -30,10 +32,10 @@ void Filling(vector_type& vector, map_type& map) {
 
 void RandomErase(vector_type& vector) {
 	size_t num = std::min(maxErase, vector.size());
-	size_t max = vector.size() - 1;
+	size_t max = vector.size();
 	num = Rnd(0, num);
 	while (num > 0) {
-		vector.erase(vector.begin() + Rnd(0, max--));
+		vector.erase(vector.begin() + Rnd(0, --max));
 		--num;
 	}
 }
@@ -56,7 +58,7 @@ void RandomErase(vector_type& vector, map_type& map) {
 	RandomErase(map);
 }
 
-void Intrsection(vector_type& vector, map_type& map) {
+void Intersection(vector_type& vector, map_type& map) {
 	auto iv = vector.begin();
 	auto im = map.begin();
 	while (iv != vector.end() && im != map.end()) {
@@ -73,8 +75,7 @@ void Intrsection(vector_type& vector, map_type& map) {
 	map.erase(im, map.end());
 }
 
-template<typename LeftType,typename RightType>
-void Print(LeftType& left, RightType& right) {
+void Print(vector_type& left, map_type& right) {
 	auto li = left.begin();
 	auto ri = right.begin();
 	std::cout << "------------------------------------" << std::endl;
@@ -90,13 +91,12 @@ void Print(LeftType& left, RightType& right) {
 
 int main()
 {
-	srand((unsigned int)time(nullptr));
 	vector_type vector;
 	map_type map;
 	Filling(vector, map);
 	Print(vector, map);
 	RandomErase(vector, map);
 	Print(vector, map);
-	Intrsection(vector, map);
+	Intersection(vector, map);
 	Print(vector, map);
 }
