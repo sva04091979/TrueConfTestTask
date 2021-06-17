@@ -61,8 +61,11 @@ void RandomErase(vector_type& vector, map_type& map) {
 void Intersection(vector_type& vector, map_type& map) {
 	auto iv = vector.begin();
 	auto im = map.begin();
+	size_t i=0;
 	while (iv != vector.end() && im != map.end()) {
-		if (*iv != im->second) {
+		if (i!=im->first)
+			iv=vector.erase(iv);
+		else if (*iv != im->second) {
 			iv = vector.erase(iv);
 			im = map.erase(im);
 		}
@@ -70,6 +73,7 @@ void Intersection(vector_type& vector, map_type& map) {
 			++iv;
 			++im;
 		}
+		++i;
 	}
 	vector.erase(iv, vector.end());
 	map.erase(im, map.end());
@@ -84,7 +88,10 @@ void Print(vector_type& left, map_type& right) {
 		if (li != left.end())	std::cout << *li++;
 		else std::cout << " ";
 		std::cout << " | ";
-		if (ri != right.end()) std::cout << ri++->second;
+		if (ri != right.end()){
+			std::cout << "(" << ri->first << ",";
+			std::cout << ri++->second << ")";
+		}
 		std::cout << std::endl;
 	}
 }
