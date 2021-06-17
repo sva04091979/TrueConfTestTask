@@ -61,8 +61,11 @@ void RandomErase(vector_type& vector, map_type& map) {
 void Intersection(vector_type& vector, map_type& map) {
 	auto iv = vector.begin();
 	auto im = map.begin();
+	size_t i=0;
 	while (iv != vector.end() && im != map.end()) {
-		if (*iv != im->second) {
+		if (i!=im->first)
+			iv=vector.erase(it);
+		else if (*iv != im->second) {
 			iv = vector.erase(iv);
 			im = map.erase(im);
 		}
@@ -70,6 +73,7 @@ void Intersection(vector_type& vector, map_type& map) {
 			++iv;
 			++im;
 		}
+		++i;
 	}
 	vector.erase(iv, vector.end());
 	map.erase(im, map.end());
