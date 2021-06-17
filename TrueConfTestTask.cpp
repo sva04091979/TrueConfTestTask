@@ -88,7 +88,10 @@ void Print(vector_type& left, map_type& right) {
 		if (li != left.end())	std::cout << *li++;
 		else std::cout << " ";
 		std::cout << " | ";
-		if (ri != right.end()) std::cout << ri++->second;
+		if (ri != right.end()){
+			std::cout << "(" << ri->first << ",";
+			std::cout << ri++->second << ")";
+		}
 		std::cout << std::endl;
 	}
 }
