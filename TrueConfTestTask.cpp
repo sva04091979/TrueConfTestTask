@@ -64,7 +64,7 @@ void Intersection(vector_type& vector, map_type& map) {
 	size_t i=0;
 	while (iv != vector.end() && im != map.end()) {
 		if (i!=im->first)
-			iv=vector.erase(it);
+			iv=vector.erase(iv);
 		else if (*iv != im->second) {
 			iv = vector.erase(iv);
 			im = map.erase(im);
