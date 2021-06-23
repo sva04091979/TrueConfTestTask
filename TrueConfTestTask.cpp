@@ -4,6 +4,7 @@
 #include <set>
 #include <random>
 #include <algorithm>
+#include <array>
 
 constexpr size_t maxErase = 15;
 
@@ -59,22 +60,21 @@ void RandomErase(vector_type& vector, map_type& map) {
 }
 
 void Intersection(vector_type& vector, map_type& map) {
+	std::array<bool, 9> tmp{ false };
 	auto iv = vector.begin();
 	auto im = map.begin();
 	size_t i=0;
 	while (iv != vector.end() && im != map.end()) {
 		if (i!=im->first)
-			iv=vector.erase(iv);
-		else if (*iv != im->second) {
-			iv = vector.erase(iv);
-			im = map.erase(im);
-		}
+			++iv;
 		else {
+			if (*iv == im->second) tmp[*iv - 1] = true;
 			++iv;
 			++im;
-		}
+		} 
 		++i;
 	}
+
 	vector.erase(iv, vector.end());
 	map.erase(im, map.end());
 }
