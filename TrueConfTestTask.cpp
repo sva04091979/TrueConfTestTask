@@ -74,9 +74,12 @@ void Intersection(vector_type& vector, map_type& map) {
 		} 
 		++i;
 	}
-
-	vector.erase(iv, vector.end());
-	map.erase(im, map.end());
+	vector.erase(remove_if(vector.begin(), vector.end(), [&tmp](auto it) {return !tmp[it - 1]; }),vector.end());
+	for (auto it = map.begin(); it != map.end();) {
+		if (!tmp[it->second-1])
+			it = map.erase(it);
+		else ++it;;
+	}
 }
 
 void Print(vector_type& left, map_type& right) {
